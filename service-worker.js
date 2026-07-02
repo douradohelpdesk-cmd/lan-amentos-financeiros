@@ -7,7 +7,7 @@
 
 'use strict';
 
-const CACHE_NAME = 'lancamentos-cache-v1';
+const CACHE_NAME = 'lancamentos-cache-v2';
 
 const STATIC_ASSETS = [
   './',
