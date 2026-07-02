@@ -1,0 +1,514 @@
+/* =========================================================
+   Lançamentos — design tokens
+   Display: Space Grotesk · Body: Inter · Icons: Material Symbols
+   ========================================================= */
+
+:root {
+  /* palette — light (default) */
+  --ink: #170F22;
+  --paper: #F2EEE7;
+  --card-bg: #FFFFFF;
+  --card-border: rgba(23, 15, 34, 0.08);
+  --text-primary: #1B1223;
+  --text-muted: #6E6478;
+  --text-faint: #A79FB2;
+
+  --brand: #6F4FF2;
+  --brand-ink: #FFFFFF;
+
+  --receita: #1F9D6B;
+  --receita-soft: rgba(31, 157, 107, 0.12);
+  --despesa: #E2603A;
+  --despesa-soft: rgba(226, 96, 58, 0.12);
+
+  --neutral-mood: #6F4FF2;
+  --neutral-mood-soft: rgba(111, 79, 242, 0.10);
+
+  --danger: #D64545;
+  --success: #1F9D6B;
+
+  --shadow-soft: 0 20px 45px -20px rgba(23, 15, 34, 0.25);
+  --shadow-tap: 0 8px 20px -10px rgba(23, 15, 34, 0.3);
+
+  --radius-card: 28px;
+  --radius-field: 16px;
+  --radius-pill: 999px;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --ink: #F2EEE7;
+  --paper: #150E1F;
+  --card-bg: #1F1530;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #F4F1F9;
+  --text-muted: #A99FC0;
+  --text-faint: #6E6480;
+
+  --receita-soft: rgba(46, 196, 137, 0.16);
+  --despesa-soft: rgba(255, 121, 88, 0.16);
+  --neutral-mood-soft: rgba(148, 118, 255, 0.16);
+
+  --shadow-soft: 0 24px 60px -22px rgba(0, 0, 0, 0.6);
+  --shadow-tap: 0 10px 24px -12px rgba(0, 0, 0, 0.55);
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+/* subtle ambient texture behind the card */
+.scene {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: max(20px, env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 12% -10%, var(--neutral-mood-soft), transparent 55%),
+    radial-gradient(circle at 90% 110%, var(--neutral-mood-soft), transparent 45%);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 2px 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--brand-ink);
+  background: var(--brand);
+  padding: 4px 8px;
+  border-radius: 9px;
+  letter-spacing: 0.02em;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+.icon-btn:hover { box-shadow: var(--shadow-tap); }
+.icon-btn:active { transform: scale(0.92); }
+
+/* ---------- Card ---------- */
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  padding: 26px 24px 24px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: background-color 0.35s ease, border-color 0.35s ease;
+}
+
+/* ---------- Segmented control (mood driver) ---------- */
+.segmented {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--paper);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  isolation: isolate;
+}
+
+.segment {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  padding: 11px 10px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.segment .material-symbols-rounded { font-size: 19px; }
+
+.segment[aria-checked="true"] { color: #FFFFFF; }
+
+.segment-glide {
+  position: absolute;
+  z-index: 0;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: var(--radius-pill);
+  background: var(--neutral-mood);
+  transform: translateX(0);
+  transition: transform 0.32s cubic-bezier(0.65, 0, 0.35, 1), background-color 0.32s ease;
+  opacity: 0;
+}
+
+.segment-glide.is-active { opacity: 1; }
+.segment-glide.pos-despesa { background: var(--despesa); transform: translateX(0); }
+.segment-glide.pos-receita { background: var(--receita); transform: translateX(100%); }
+
+/* ---------- Amount field (hero) ---------- */
+.amount-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 4px;
+}
+
+.amount-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.amount-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  transition: color 0.25s ease;
+  color: var(--neutral-mood);
+}
+
+.card[data-tipo="despesa"] .amount-wrap { color: var(--despesa); }
+.card[data-tipo="receita"] .amount-wrap { color: var(--receita); }
+
+.amount-prefix {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  opacity: 0.8;
+}
+
+.amount-input {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 44px;
+  letter-spacing: -0.02em;
+  border: none;
+  background: transparent;
+  color: inherit;
+  width: 220px;
+  text-align: left;
+  outline: none;
+  caret-color: currentColor;
+}
+
+.amount-input::placeholder { color: currentColor; opacity: 0.35; }
+
+/* ---------- Generic fields ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+}
+
+input[type="text"]#descricao,
+select {
+  width: 100%;
+  border: 1.5px solid var(--card-border);
+  background: var(--paper);
+  color: var(--text-primary);
+  border-radius: var(--radius-field);
+  padding: 13px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+  appearance: none;
+}
+
+input[type="text"]#descricao:focus,
+select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--neutral-mood-soft);
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap select {
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+.select-caret {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+select:invalid,
+select:has(option[value=""]:checked) {
+  color: var(--text-faint);
+}
+
+/* ---------- Feedback ---------- */
+.feedback {
+  min-height: 0;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+.feedback.show {
+  max-height: 80px;
+  opacity: 1;
+  padding: 12px 14px;
+  margin-top: -4px;
+}
+
+.feedback.success {
+  background: var(--receita-soft);
+  color: var(--receita);
+}
+
+.feedback.error {
+  background: var(--despesa-soft);
+  color: var(--despesa);
+}
+
+/* ---------- Save button ---------- */
+.save-btn {
+  position: relative;
+  border: none;
+  border-radius: var(--radius-field);
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: #FFFFFF;
+  background: var(--neutral-mood);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.25s ease, transform 0.12s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: var(--shadow-tap);
+}
+
+.card[data-tipo="despesa"] .save-btn { background: var(--despesa); }
+.card[data-tipo="receita"] .save-btn { background: var(--receita); }
+
+.save-btn:hover { transform: translateY(-1px); }
+.save-btn:active { transform: translateY(0) scale(0.98); }
+
+.save-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.save-btn.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #FFFFFF;
+  display: none;
+  animation: spin 0.7s linear infinite;
+}
+
+.save-btn.loading .save-label { opacity: 0.85; }
+.save-btn.loading .spinner { display: inline-block; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Last entry ---------- */
+.last-entry {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 14px 18px;
+  margin-top: 14px;
+  box-shadow: var(--shadow-tap);
+  animation: fade-slide-in 0.35s ease;
+}
+
+.last-entry[hidden] { display: none; }
+
+.last-entry-eyebrow {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.last-entry-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.last-entry-info {
+  min-width: 0;
+}
+
+.last-entry-desc {
+  margin: 0;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.last-entry-meta {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.last-entry-valor {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.last-entry-valor.tipo-receita { color: var(--receita); }
+.last-entry-valor.tipo-despesa { color: var(--despesa); }
+
+@keyframes fade-slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Footnote ---------- */
+.footnote {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-faint);
+  margin-top: 18px;
+  padding: 0 20px;
+}
+
+/* ---------- Field shake for validation ---------- */
+.field-invalid input,
+.field-invalid select,
+.amount-field.field-invalid .amount-wrap {
+  animation: shake 0.4s ease;
+}
+
+.field-invalid label { color: var(--despesa); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 380px) {
+  .amount-input { width: 170px; font-size: 38px; }
+  .field-row { gap: 8px; }
+}
